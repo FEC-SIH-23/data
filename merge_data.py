@@ -1,6 +1,6 @@
 import pandas as pd
 
-files = ['bch_encoded_noise_snr2.csv', 'convolutional_encoded_noise_snr2.csv', 'ldpc_encoded_noise_2048_snr2.csv', 'turbo_encoded_noise_1784_to_2048_snr2.csv',
+files = ['bch_encoded_noise_snr2.csv', 'convolutional_encoded_noise_snr2.csv', 'ldpc_encoded_noise_2048_snr2.csv',
          'turbo_encoded_noise_678_to_2048_snr2.csv']
 
 merged = pd.DataFrame()
@@ -12,7 +12,7 @@ for f in files:
     merged = pd.concat([merged, df], ignore_index=True)
 print("[+] File merging completed")
 
-assert merged.shape[0] == 507400, print(f"[X] Total rows are {merged.shape[0]}")
+assert merged.shape[0] == 407400, print(f"[X] Total rows are {merged.shape[0]}")
 
 print("[*] Shuffling Dataframe")
 
