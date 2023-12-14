@@ -3,8 +3,11 @@ import os
 
 snr = input("[*] Give the SNR value: ")
 block = input("[*] Give the block length: ")
-
 dirname = f"./all_data/snr-{snr}/block-{block}"
+
+if float(snr) < 0.5:
+    dirname = f"./all_data/snr-negative{snr}/block-{block}"
+
 files = os.listdir(dirname)
 
 merged = pd.DataFrame()
