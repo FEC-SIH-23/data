@@ -1,6 +1,6 @@
 import sionna as sn
 from commpy.channels import awgn
-import numpy as np
+import numpy
 import pandas as pd
 import random 
 import os
@@ -13,10 +13,15 @@ n = int(input("[*] Input the Block length: "))
 BATCH_SIZE = int(input("[*] Input the Batch size: "))
 SNR = input("[*] Input the SNR value: ")
 path = f"./all_data/snr-{SNR}/block-{n}"
+filename = f"ldpc_noise_code_{n}_snr_{SNR}.csv"
 if '.' in SNR:
     SNR = float(SNR)
 else:
     SNR = int(SNR)
+
+if SNR < 0:
+    path = f"./all_data/snr_negative{abs(SNR)}"
+    filename = f"ldpc_noise_code_{n}_snr_negative{abs(SNR)}"
 
 #### for code rate 1/2 ####
 
@@ -118,7 +123,7 @@ print("[INFO] Directory path has been validated")
 df = pd.DataFrame(data, index=None)
 print("[INFO] Dataframe has been created")
 
-df.to_csv(f"{path}/ldpc_noise_code_{n}_snr{SNR}.csv", header=True, index=False)
+df.to_csv(f"{path}/{filename}", header=True, index=False)
 print("[INFO] File has been written")
 
 
