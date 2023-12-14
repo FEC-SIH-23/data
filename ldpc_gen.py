@@ -3,14 +3,20 @@ from commpy.channels import awgn
 import numpy as np
 import pandas as pd
 import random 
+import os
 
-df = pd.DataFrame(columns=['encoded_strings', 'fec_scheme'])
+df = pd.DataFrame(columns=['encoded_data_string', 'encoding'])
 binary_source = sn.utils.BinarySource()
 
 ### parameters ###
-n = 2048
-BATCH_SIZE = 35000
-
+n = int(input("[*] Input the Block length: "))
+BATCH_SIZE = int(input("[*] Input the Batch size: "))
+SNR = input("[*] Input the SNR value: ")
+path = f"./all_data/snr-{SNR}/block-{n}"
+if '.' in SNR:
+    SNR = float(SNR)
+else:
+    SNR = int(SNR)
 
 #### for code rate 1/2 ####
 
@@ -46,7 +52,7 @@ print('[INFO] Created codes of rate 4/5')
 
 print("[INFO] All Codes have been created")
 
-# ---------- Utility functions for Mod, Demod and Noise --------------
+# ---------- Utility functions for Mod, Demod, Noise and List-to-string conversion --------------
 
 def bpsk_modulation(bits):
     # Define the phase states for BPSK modulation
@@ -67,22 +73,19 @@ def bpsk_demodulation(received_signal):
 def apply_awgn(modulated_signal, snr, coderate):
     return awgn(modulated_signal, snr, coderate)
 
-#bpsk_modulation_vectorized = np.vectorize(bpsk_modulation)
-#bpsk_demodulation_vectorized = np.vectorize(bpsk_demodulation)
-#apply_awgn_vectorized = np.vectorize(apply_awgn)
+def bin_string(a):
+    return ''.join(str(bit) for bit in a)
 
 # ------------ Apply modulation and channels ----------------
-
-# converting the bit string lists to numpy arrays
 
 c12_modulated = [bpsk_modulation(x) for x in c12_list]
 c23_modulated = [bpsk_modulation(x) for x in c23_list]
 c45_modulated = [bpsk_modulation(x) for x in c45_list]
 print("[INFO] BPSK Modulation completed")
 
-c12_noisy = [apply_awgn(x, 2, 1/2) for x in c12_modulated]
-c23_noisy = [apply_awgn(x, 2, 1/2) for x in c23_modulated]
-c45_noisy = [apply_awgn(x, 2, 1/2) for x in c45_modulated]
+c12_noisy = [apply_awgn(x, SNR, 1/2) for x in c12_modulated]
+c23_noisy = [apply_awgn(x, SNR, 1/2) for x in c23_modulated]
+c45_noisy = [apply_awgn(x, SNR, 1/2) for x in c45_modulated]
 print("[INFO] AWGN added")
 
 c12_demodulated = [bpsk_demodulation(x) for x in c12_noisy]
@@ -90,30 +93,32 @@ c23_demodulated = [bpsk_demodulation(x) for x in c23_noisy]
 c45_demodulated = [bpsk_demodulation(x) for x in c45_noisy]
 print("[INFO] BPSK Demodulation completed")
 
-def bin_string(a):
-    return ''.join(str(bit) for bit in a)
-
 c12_demodulated_string = [bin_string(x) for x in c12_demodulated ]
 c23_demodulated_string = [bin_string(x) for x in c23_demodulated ]
 c45_demodulated_string = [bin_string(x) for x in c45_demodulated ]
+print("[INFO] Binary list to string conversion completed")
 
 #### all 3 together ####
 encoded = c12_demodulated_string + c23_demodulated_string + c45_demodulated_string
-label = [3 for _ in range(105000)]
+label = [3 for _ in range(BATCH_SIZE*3)]
+print("[INFO] Labels have been created")
     
 random.shuffle(encoded)
 print('[INFO] Data has been shuffled')
 
 data = {
-    'encoded_strings': encoded,
-    'fec_scheme': label
+    'encoded_data_string': encoded,
+    'encoding': label
 }
 
-df = pd.DataFrame(data, index=None)
+if not os.path.exists(path):
+    os.makedirs(path)
+print("[INFO] Directory path has been validated")
 
+df = pd.DataFrame(data, index=None)
 print("[INFO] Dataframe has been created")
 
-df.to_csv('ldpc_updated2048_105000.csv', header=True, index=False)
+df.to_csv(f"{path}/ldpc_noise_code_{n}_snr{SNR}.csv", header=True, index=False)
 print("[INFO] File has been written")
 
 
