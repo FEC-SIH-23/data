@@ -9,9 +9,11 @@ df = pd.DataFrame(columns=['encoded_data_string', 'encoding'])
 binary_source = sn.utils.BinarySource()
 
 ### parameters ###
-n = int(input("[*] Input the Block length: "))
-BATCH_SIZE = int(input("[*] Input the Batch size: "))
-SNR = input("[*] Input the SNR value: ")
+n = int(input("[PROMPT] Input the Block length: "))
+BATCH_SIZE = int(input("[PROMPT] Input the Batch size: "))
+SNR = input("[PROMPT] Input the SNR value: ")
+m = int("[PROMPT] Input the shift value for PSK modulation")
+
 path = f"./all_data/snr-{SNR}/block-{n}"
 filename = f"ldpc_noise_code_{n}_snr_{SNR}.csv"
 if '.' in SNR:
@@ -20,18 +22,18 @@ else:
     SNR = int(SNR)
 
 if SNR < 0:
-    path = f"./all_data/snr_negative{abs(SNR)}"
+    path = f"./all_data/snr-negative{abs(SNR)}/block-{n}"
     filename = f"ldpc_noise_code_{n}_snr_negative{abs(SNR)}"
 
 #### for code rate 1/2 ####
 
-rate12 = 1/2
-k12 = int(n * rate12)
+#rate12 = 1/2
+#k12 = int(n * rate12)
 
-encoder12 = sn.fec.ldpc.LDPC5GEncoder(k12, n)
-msg12 = binary_source([BATCH_SIZE, k12])
-c12 = encoder12(msg12).numpy()
-c12_list = [''.join([str(int(a)) for a in x]) for x in c12]
+#encoder12 = sn.fec.ldpc.LDPC5GEncoder(k12, n)
+#msg12 = binary_source([BATCH_SIZE, k12])
+#c12 = encoder12(msg12).numpy()
+#c12_list = [''.join([str(int(a)) for a in x]) for x in c12]
 
 print("[INFO] Created codes of rate 1/2")
 
