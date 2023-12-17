@@ -4,6 +4,7 @@
 #modulates it using BPSK modulation technique, adds White Gaussian Noise 
 #and then pads the signal to desired length and writes the signal as samp#les in csv file.
 #use [$ pip install numpy galois] to install the required libraries.
+#In this particular script, we are using BCH(15, 11) coding technique..
 
 
 # Importing libraries required, remove the comment on the next line to install on Google Colab and Kaggle..
