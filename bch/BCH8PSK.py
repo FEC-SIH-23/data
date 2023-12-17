@@ -1,7 +1,9 @@
 #This code is focused to generate a BCH encoded string dataset in csv 
 #format to train RNN model for PSID SIH1447. This code utilizes Libraries
-#galois for BCH encoding. It generates a random data encodes it using BCH#modulates it using BPSK modulation technique, adds White Gaussian Noise #and then pads the signal to desired length and writes the signal as samp#les in csv file.
-# use [$ pip install numpy galois] to install the required libraries.
+#galois for BCH encoding. It generates a random data encodes it using BCH
+#modulates it using BPSK modulation technique, adds White Gaussian Noise 
+#and then pads the signal to desired length and writes the signal as samp#les in csv file.
+#use [$ pip install numpy galois] to install the required libraries.
 
 
 # Importing libraries required, remove the comment on the next line to install on Google Colab and Kaggle..
