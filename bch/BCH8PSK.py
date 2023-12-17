@@ -5,7 +5,7 @@
 
 
 # Importing libraries required, remove the comment on the next line to install on Google Colab and Kaggle..
-#!pip install galois numpy
+!pip install galois numpy
 import galois
 import numpy as np
 import csv
@@ -81,7 +81,8 @@ if __name__ == "__main__":
     encoding = int(input("Enter the Encoding Parameter(for CSV): "))
 
     samples = generate_samples(n, k, num_samples, snr_dB, pad_length)
-    save_to_csv(samples, f'BCH{n}{k}_SNR{snr_dB}_BL{pad_length}.csv', encoding)
+    save_to_csv(samples, f'BCH{n}{k}_8PSK_SNR{snr_dB}_BL{pad_length}.csv', encoding)
 
-    print(f"BCH{n}{k}_SNR{snr_dB}_BL{pad_length}.csv'created, download it now!")
+    print(f"BCH{n}{k}_8PSK_SNR{snr_dB}_BL{pad_length}.csv'created, download it now!")
     print(f"The current BCH coding used is BCH({n}, {k})")
+
