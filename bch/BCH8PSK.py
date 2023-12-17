@@ -76,9 +76,9 @@ if __name__ == "__main__":
     n = 15
     k = 11
     num_samples = int(input("Enter the Number of Samples:- "))
-    snr_dB = float(input("Enter the SNR in dB: "))
-    pad_length = int(input("Enter the Pad Length: "))
-    encoding = int(input("Enter the Encoding Parameter(for CSV): "))
+    snr_dB = float(input("Enter the SNR in dB:- "))
+    pad_length = int(input("Enter the Pad Length:- "))
+    encoding = int(input("Enter the Encoding Parameter(for CSV):- "))
 
     samples = generate_samples(n, k, num_samples, snr_dB, pad_length)
     save_to_csv(samples, f'BCH{n}{k}_8PSK_SNR{snr_dB}_BL{pad_length}.csv', encoding)
